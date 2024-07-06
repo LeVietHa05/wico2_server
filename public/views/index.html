@@ -20,7 +20,7 @@
         }
 
         div[class^="grid-item"] {
-            background-color: rgba(255, 255, 255, 0.8);
+            /* background-color: rgba(255, 255, 255, 0.8); */
             border: 1px solid rgba(0, 0, 0, 0.8);
             text-align: center;
             padding: 20px 0;
@@ -29,6 +29,14 @@
 
         .d-none {
             display: none;
+        }
+
+        .thing-there {
+            background-color: green;
+        }
+
+        .thing-not-there {
+            background-color: red;
         }
     </style>
 </head>
@@ -75,6 +83,8 @@
     <!-- soccket -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        let matrix;
+
         const newAccDialog = document.getElementById('newAcc-dialog');
         const newAccDialog_closeBtn = document.querySelector('#newAcc-dialog button');
         newAccDialog_closeBtn.addEventListener('click', () => {
@@ -95,14 +105,22 @@
         socket.emit("/web/get-data");
         socket.on('/web/get-data-done', (data) => {
             console.log(data)
-            processData(data[0]);
+            matrix = data[0];
+            processData(matrix);
         })
         socket.on('connect', () => {
             console.log('connected');
         });
-        socket.on("/esp/new-card-found", (data) => {
+        socket.on("/web/new-card-found", (data) => {
             console.log(data)
         })
+
+        socket.on("/web/pos-of-thing", (data) => {
+            console.log(data)
+            matrix = data[0];
+            processData(matrix);
+        })
+
         socket.on("/web/got-person", (data) => {
             console.log(data)
             const curPerson = document.getElementById('cur-person');
@@ -124,15 +142,23 @@
     <script>
         function render(data, str) {
             console.log("rendering data")
-            
+
             let tempitem = []
             const gridContainer = document.querySelector('.grid-container');
-            for (let i =0; i < data.length; i++) {
+            gridContainer.innerHTML = '';
+            for (let i = 0; i < data.length; i++) {
                 if (tempitem.includes(data[i].item)) {
                     continue;
                 }
                 const gridItem = document.createElement('div');
                 gridItem.classList.add('grid-item');
+                if (data[i].isThingThere) {
+                    gridItem.classList.add("thing-there");
+                    gridItem.classList.remove("thing-not-there");
+                } else {
+                    gridItem.classList.remove("thing-there");
+                    gridItem.classList.add("thing-not-there");
+                }
                 gridItem.style.gridArea = `${data[i].item}`;
                 gridItem.innerText = data[i].item;
                 gridContainer.appendChild(gridItem);

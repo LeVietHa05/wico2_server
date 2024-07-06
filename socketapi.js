@@ -27,7 +27,7 @@ io.on("connection", (socket) => {
     socket.on("/esp/new-card-found", (data) => {
         console.log("[/esp/new-card-found] from [" + socket.id + "]:", data);
         let { id, uid, floor } = data;
-        floor = 1 ? id = id : id = id + 15;
+        // floor = 1 ? id = id : id = id + 15;
         Matrix.updateUID(id, uid, matrix) ? console.log("update success") : console.log("update fail");
 
         socket.broadcast.emit("/web/new-card-found", data);
@@ -45,6 +45,13 @@ io.on("connection", (socket) => {
             console.log("new person");
             socket.broadcast.emit("/web/new-person", data.uid); //send uid to web to create new person
         }
+    })
+
+    socket.on("/esp/pos-of-thing", (data) => {
+        console.log("[/esp/pos-of-thing] from [" + socket.id + "]:", data);
+        let msg = data.posOfThing;
+        Matrix.updateThing(msg, matrix) ? console.log("update success") : console.log("update fail");
+        socket.broadcast.emit("/web/pos-of-thing", matrix);
     })
 
     socket.on("/web/new-person", (data) => {

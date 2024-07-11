@@ -28,9 +28,10 @@ io.on("connection", (socket) => {
         console.log("[/esp/new-card-found] from [" + socket.id + "]:", data);
         let { id, uid, floor } = data;
         // floor = 1 ? id = id : id = id + 15;
-        Matrix.updateUID(id, uid, matrix) ? console.log("update success") : console.log("update fail");
-
-        socket.broadcast.emit("/web/new-card-found", data);
+        console.log(Matrix.updateUID(id, uid, matrix));
+        if (Matrix.checkItem(Matrix.getItemName(uid), matrix)) {
+            socket.broadcast.emit("/web/new-card-found", matrix);
+        }
     })
 
     socket.on("/esp/got-person", (data) => {

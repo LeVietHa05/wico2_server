@@ -113,6 +113,8 @@
         });
         socket.on("/web/new-card-found", (data) => {
             console.log(data)
+            matrix = data[0];
+            processData(matrix);
         })
 
         socket.on("/web/pos-of-thing", (data) => {

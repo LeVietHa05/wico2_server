@@ -44,7 +44,7 @@ function createMatrix(floor, width, height) {
                     uid: null,
                     id: count, // the location of the rfid reader ( 1-15 for floor 1 and 16-30 for floor 2)
                     time: Date.now(),
-                    item: item[count],
+                    item: item[count], //normally, this mean notthing is store here.
                     isThingThere: false,
                 }
                 setNewLocation(count, k, j, i);
@@ -101,7 +101,7 @@ function getLocationOfRFID(id) {
 }
 
 /**
- * Updates the UID of an item based on its ID.
+ * Updates the UID of an item based on its ID. if the uid is 0, it means the item is removed.
  * @param {string} id - The ID of the item.
  * @param {number} uid - The new UID of the item.
  * @param {Array} matrix - The matrix containing the item data.
@@ -110,12 +110,20 @@ function getLocationOfRFID(id) {
 function updateUID(id, uid, matrix) {
     let location = getLocationOfRFID(id);
     if (location != null) {
-        let itemName = getItemName(uid);
-        if (itemName == null) return "Item not found. uid not registered.";
-        matrix[location.floor][location.y][location.x].uid = uid;
-        matrix[location.floor][location.y][location.x].item = itemName;
-        matrix[location.floor][location.y][location.x].time = Date.now();
-        return "update for id: " + id + " success. item: " + itemName + " uid: " + uid + " location: " + location.x + ", " + location.y + ", " + location.floor;
+        let itemNam;
+        if (uid == 0) { //if the uid is 0, it means the item is removed
+            matrix[location.floor][location.y][location.x].uid = uid;
+            matrix[location.floor][location.y][location.x].item = `item${id}`;
+            matrix[location.floor][location.y][location.x].time = Date.now();
+            return "update for id: " + id + " success. item: " + itemNam + " uid: " + uid + " location: " + location.x + ", " + location.y + ", " + location.floor;
+        } else {
+            itemNam = getItemName(uid);
+            if (itemName == null) return "Item not found. uid not registered.";
+            matrix[location.floor][location.y][location.x].uid = uid;
+            matrix[location.floor][location.y][location.x].item = itemName;
+            matrix[location.floor][location.y][location.x].time = Date.now();
+            return "update for id: " + id + " success. item: " + itemName + " uid: " + uid + " location: " + location.x + ", " + location.y + ", " + location.floor;
+        }
     }
     return "id not found.";
 }

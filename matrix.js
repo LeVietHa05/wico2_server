@@ -110,14 +110,14 @@ function getLocationOfRFID(id) {
 function updateUID(id, uid, matrix) {
     let location = getLocationOfRFID(id);
     if (location != null) {
-        let itemNam;
+        let itemName;
         if (uid == 0) { //if the uid is 0, it means the item is removed
             matrix[location.floor][location.y][location.x].uid = uid;
             matrix[location.floor][location.y][location.x].item = `item${id}`;
             matrix[location.floor][location.y][location.x].time = Date.now();
             return "update for id: " + id + " success. item: " + itemNam + " uid: " + uid + " location: " + location.x + ", " + location.y + ", " + location.floor;
         } else {
-            itemNam = getItemName(uid);
+            itemName = getItemName(uid);
             if (itemName == null) return "Item not found. uid not registered.";
             matrix[location.floor][location.y][location.x].uid = uid;
             matrix[location.floor][location.y][location.x].item = itemName;
@@ -135,7 +135,7 @@ function updateUID(id, uid, matrix) {
  */
 function getItemName(uid) {
     for (let i = 0; i < listItem.length; i++) {
-        if (listItem[i].uids.includes(uid)) {
+        if (listItem[i].uids.includes(+uid)) {
             return listItem[i].item;
         }
     }

@@ -1,6 +1,7 @@
 :root {
     --mainRed: #AD4040;
     --mainBg: #FFF8E8;
+    --itemBG: #EED8D8;
     --neutral-grey: #AEAFB1;
     --fontWhite: #FFF;
     --orange1: #FFA500;
@@ -38,9 +39,9 @@ body {
     display: grid;
     grid-template-rows: auto 1fr;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1000px) {
         font-size: 16px;
-        height: auto;
+        height: 150vh;
         display: flex;
         flex-flow: column nowrap;
         overflow: scroll;
@@ -68,7 +69,7 @@ header {
     align-items: center;
     gap: 2rem;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1000px) {
         flex-flow: column nowrap;
     }
 }
@@ -78,7 +79,7 @@ header {
     flex-flow: row nowrap;
     align-items: center;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1000px) {
         flex-flow: column nowrap;
     }
 }
@@ -89,7 +90,7 @@ header {
     margin: 0 1rem;
     border-radius: 1rem;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1000px) {
         margin-right: 0;
         margin-bottom: 1rem;
     }
@@ -132,13 +133,21 @@ main {
     display: grid;
     grid-template-columns: 70% 25%;
     grid-template-rows: 100%;
-    justify-content: space-between;
+    justify-content: space-around;
 
-    @media screen and (max-width: 600px) {
-        height: auto;
+    @media screen and (max-width: 1000px) {
+        height: 1fr;
         display: flex;
         flex-flow: column nowrap;
         gap: 3rem;
+
+        #cabinetContainer {
+            height: 100% !important;
+        }
+
+        #info {
+            height: 100% !important;
+        }
     }
 }
 
@@ -249,7 +258,7 @@ main {
 
     >div {
         padding: 1rem 1.5rem;
-        border-radius: 1rem;
+        border-radius: 1rem 1rem 0 0;
         color: var(--neutral-grey);
     }
 
@@ -257,13 +266,13 @@ main {
         color: var(--fontWhite);
         background-color: var(--mainRed);
         font-family: NunitoBold;
+        transform: scale(1.05);
     }
 }
 
 #cabinet {
     background-color: var(--mainRed);
     border-radius: 2rem;
-    /* height: -webkit-fill-available; */
     overflow: hidden;
     display: flex;
     flex-flow: column nowrap;
@@ -280,7 +289,7 @@ main {
 
 #cabinet>div {
     display: grid;
-    
+
 }
 
 
@@ -290,10 +299,61 @@ main {
 
     &:hover {
         filter: brightness(0.9);
-        /* background-color: rgba(225, 225, 225, 0.25); */
+
     }
 }
 
 .shadow {
     box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.25);
+}
+
+.grid-container {
+    display: grid;
+    grid-gap: 2rem;
+    padding: 3rem;
+    width: 100%;
+    height: 100%;
+    /* make each row have same hight */
+    grid-auto-rows: 1fr;
+}
+
+div[class^="grid-item"] {
+    font-size: 1.25rem;
+    height: 1fr;
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    background-color: var(--itemBG);
+
+    /* TODO: update bg img */
+    >div {
+        /* padding: 5%; */
+        width: 100%;
+        height: 100%;
+        background-image: url('../image/maintain.png');
+        background-size: contain;
+        background-origin: content-box;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    &:hover {
+        box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5);
+        transition: all 0.05s ease-in-out;
+    }
+}
+
+.d-none {
+    display: none;
+}
+
+/* neu thiet bi dang duoc doc tai vi tri nay */
+/* .thing-there {
+    background-color: green;
+} */
+
+/* neu khong co thiet bi */
+.thing-not-there {
+    /* filter: grayscale(0.8); */
+    background-color: var(--neutral-grey);
 }

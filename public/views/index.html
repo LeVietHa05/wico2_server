@@ -262,20 +262,42 @@
     }
 
     function rotateImageIfNeed() {
-        const gridContainer = document.querySelector('.grid-container');
-        const gridItems = document.querySelectorAll('.grid-item');
-        gridItems.forEach((item) => {
-            let rect = item.getBoundingClientRect();
-            if (rect.width >= rect.height) {
-                item.childNodes[0].style.transform = 'rotate(0deg)';
-                item.childNodes[0].style.padding = `2% 5%`;
-            } else {
-                item.childNodes[0].style.transform = 'rotate(90deg)';
-                item.childNodes[0].style.padding = `5% 2%`;
-            }
-        })
+        const userAgent = navigator.userAgent;
+
+        // if (userAgent.includes("Firefox")) {
+        //     return "Firefox";
+        // } else if (userAgent.includes("SamsungBrowser")) {
+        //     return "Samsung Internet";
+        // } else if (userAgent.includes("Opera") || userAgent.includes("OPR")) {
+        //     return "Opera";
+        // } else if (userAgent.includes("Trident")) {
+        //     return "Internet Explorer";
+        // } else if (userAgent.includes("Edge")) {
+        //     return "Edge";
+        // } else if (userAgent.includes("Chrome")) {
+        //     return "Chrome";
+        // } else if (userAgent.includes("Safari")) {
+        //     return resize();
+        // } else {
+        //     return "unknown";
+        // }
+
+
+
+        function resize() {
+            const gridContainer = document.querySelector('.grid-container');
+            const gridItems = document.querySelectorAll('.grid-item');
+            gridItems.forEach((item) => {
+                let rect = item.getBoundingClientRect();
+                if (rect.width >= rect.height) {
+                    item.childNodes[0].style.transform = 'rotate(0deg)';
+                } else {
+                    item.childNodes[0].style.transform = 'rotate(90deg)';
+                }
+            })
+        }
+        resize();
     }
-    
     // Listen for resize events
     window.addEventListener('resize', rotateImageIfNeed);
 

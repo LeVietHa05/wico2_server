@@ -6,44 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mechanical cabinet management</title>
     <link rel="stylesheet" href="../stylesheets/main.css">
-
-    <style>
-        .grid-container {
-            display: grid;
-            grid-gap: 10px;
-            /* background-color: #2196F3; */
-            padding: 10px;
-            width: 100%;
-            height: 100%;
-            /* grid-template-areas:
-                        "item1 item1 item2 item3 item4"
-                        "item5 item6 item2 item7 item8"
-                        "item9 item9 item10 item10 item10"; */
-        }
-
-        div[class^="grid-item"] {
-            /* background-color: rgba(255, 255, 255, 0.8); */
-            border: 1px solid rgba(0, 0, 0, 0.8);
-            text-align: center;
-            padding: 20px 0;
-            font-size: 30px;
-            height: 1fr;
-        }
-
-        .d-none {
-            display: none;
-        }
-
-        /* neu thiet bi dang duoc doc tai vi tri nay */
-        .thing-there {
-            background-color: green;
-        }
-
-        /* neu khong co thiet bi */
-        .thing-not-there {
-            background-color: red;
-        }
-    </style>
 </head>
 
 <body>
@@ -81,6 +43,7 @@
                 <div id="stage1" class="grid-container">
                 </div>
                 <div id="stage2" class="inactive">
+
                 </div>
             </div>
         </div>
@@ -146,21 +109,19 @@
 </body>
 
 <script>
-    let stage1 = document.getElementById('stage1');
-    let stage2 = document.getElementById('stage2');
-
-    function genInsideItem(numberOfItem, insideStage) {
-        for (let i = 0; i < numberOfItem; i++) {
-            const item = document.createElement('div');
-            item.classList.add('stage-item');
-            item.classList.add('grid-item');
-            item.innerHTML = `${insideStage.id} ${i + 1}`;
-            insideStage.appendChild(item);
-        }
+    let imgList = {
+        Wire_Stripper: '../image/Wire_Stripper.png',
+        Ratchet_Pipe_Cutter: '../image/Ratchet_Pipe_Cutter.png',
+        Adjustable_Wrench: '../image/Adjustable_Wrench.png',
+        Locking_Piler: '../image/Locking_Piler.png',
+        Electronic_Cutters: '../image/Electronic_Cutters.png',
+        Double_Headed_Screwdriver: '../image/Double_Headed_Screwdriver.png',
+        Interchangeable_Screwdriver: '../image/Interchangeable_Screwdriver.png',
     }
 
-    // genInsideItem(15, stage1);
-    // genInsideItem(15, stage2);
+
+    let stage1 = document.getElementById('stage1');
+    let stage2 = document.getElementById('stage2');
 
     // info: User - Log btn switch
     let logInfoTitleUser = document.getElementById('logInfoTitleUser');
@@ -283,12 +244,41 @@
                 gridItem.classList.add("thing-not-there");
             }
             gridItem.style.gridArea = `${data[i].item}`;
-            gridItem.innerText = data[i].item;
+            gridItem.setAttribute('data-item', data[i].item);
             gridContainer.appendChild(gridItem);
+            // gent child
+            const gridItemChild = document.createElement('div');
+            gridItemChild.id = `gridItemChild${data[i].item}`;
+            gridItem.appendChild(gridItemChild);
+
             tempitem.push(data[i].item)
+
+            if (data[i].item in imgList) {
+                gridItemChild.style.backgroundImage = `url(${imgList[data[i].item]})`;
+            }
         }
         gridContainer.style.gridTemplateAreas = str;
+        rotateImageIfNeed();
     }
+
+    function rotateImageIfNeed() {
+        const gridContainer = document.querySelector('.grid-container');
+        const gridItems = document.querySelectorAll('.grid-item');
+        gridItems.forEach((item) => {
+            let rect = item.getBoundingClientRect();
+            if (rect.width >= rect.height) {
+                item.childNodes[0].style.transform = 'rotate(0deg)';
+                item.childNodes[0].style.padding = `2% 5%`;
+            } else {
+                item.childNodes[0].style.transform = 'rotate(90deg)';
+                item.childNodes[0].style.padding = `5% 2%`;
+            }
+        })
+    }
+    
+    // Listen for resize events
+    window.addEventListener('resize', rotateImageIfNeed);
+
     //flatten array
     function processData(data) {
         console.log("processing data")
@@ -298,7 +288,6 @@
             strs[i] = data[i].map((item) => {
                 return item.item;
             })
-            // console.log(strs[i].join(' '))
         }
         let str = strs.reduce((acc, cur) => {
             console.log(`${acc} ${cur.join(' ').trim()}`)

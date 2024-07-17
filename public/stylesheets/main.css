@@ -347,13 +347,8 @@ div[class^="grid-item"] {
     display: none;
 }
 
-/* neu thiet bi dang duoc doc tai vi tri nay */
-/* .thing-there {
-    background-color: green;
-} */
-
 /* neu khong co thiet bi */
 .thing-not-there {
-    /* filter: grayscale(0.8); */
+    filter: grayscale(1) brightness(0.7);
     background-color: var(--neutral-grey);
 }

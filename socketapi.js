@@ -11,6 +11,7 @@ const io = require("socket.io")(option);
 
 const Matrix = require('./matrix.js');
 let matrix = Matrix.matrix;
+let posOfThing = "";
 
 const db = require('./db.js');
 
@@ -50,9 +51,13 @@ io.on("connection", (socket) => {
 
     socket.on("/esp/pos-of-thing", (data) => {
         console.log("[/esp/pos-of-thing] from [" + socket.id + "]:", data);
-        let msg = data.posOfThing;
-        Matrix.updateThing(msg, matrix) ? console.log("update success") : console.log("update fail");
-        socket.broadcast.emit("/web/pos-of-thing", matrix);
+        let msg = "";
+        if (posOfThing == "" || posOfThing != data.posOfThing) {
+            msg = data.posOfThing;
+            posOfThing = data.posOfThing;
+            Matrix.updateThing(msg, matrix) ? console.log("update success") : console.log("update fail");
+            socket.broadcast.emit("/web/pos-of-thing", matrix);
+        }
     })
 
     socket.on("/web/new-person", (data) => {

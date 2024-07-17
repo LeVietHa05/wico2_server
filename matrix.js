@@ -170,10 +170,11 @@ function checkItem(itemName, matrix) {
  * @returns {boolean} - Returns true if the item's location was successfully set, false otherwise.
  */
 function updateThing(isThingTheres, matrix) {
-    for (let i = 0; i < isThingTheres.length; i++) {
-        if (i < 5) matrix[0][0][i].isThingThere = isThingTheres[i] == 1 ? true : false;
-        else if (i < 10) matrix[0][1][i - 5].isThingThere = isThingTheres[i] == 1 ? true : false;
-        else matrix[0][2][i - 10].isThingThere = isThingTheres[i] == 1 ? true : false;
+    for (let i = 0; i < 15; i++) {
+        // for (let i = 0; i < isThingTheres.length; i++) {
+        if (i < 5) matrix[0][0][i].isThingThere = isThingTheres[i] == 0 ? true : false;
+        else if (i < 10) matrix[0][1][i - 5].isThingThere = isThingTheres[i] == 0 ? true : false;
+        else matrix[0][2][i - 10].isThingThere = isThingTheres[i] == 0 ? true : false;
     }
     return true;
 }

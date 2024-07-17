@@ -180,21 +180,36 @@ function updateThing(isThingTheres, matrix) {
 }
 
 const matrix = createMatrix(noFloor, width, height);
-// matrix[0][0][0].item = "item1";
-// matrix[0][0][1].item = "item1";
-// matrix[0][0][2].item = "item2";
-// matrix[0][0][3].item = "item3";
-// matrix[0][0][4].item = "item4";
-// matrix[0][1][0].item = "item5";
-// matrix[0][1][1].item = "item6";
-// matrix[0][1][2].item = "item2";
-// matrix[0][1][3].item = "item7";
-// matrix[0][1][4].item = "item8";
-// matrix[0][2][0].item = "item9";
-// matrix[0][2][1].item = "item9";
-// matrix[0][2][2].item = "item10";
-// matrix[0][2][3].item = "item10";
-// matrix[0][2][4].item = "item10";
+matrix[0][0][0].item = "Wire_Stripper";
+matrix[0][0][0].uids = 2211766823;
+matrix[0][0][1].item = "Wire_Stripper";
+matrix[0][0][1].uids = 3286080041;
+matrix[0][0][2].item = "Ratchet_Pipe_Cutter";
+matrix[0][0][2].uids = 334518312;
+matrix[0][0][3].item = "Ratchet_Pipe_Cutter";
+matrix[0][0][3].uids = 595553832;
+matrix[0][0][4].item = "Electronic_Cutters";
+matrix[0][0][4].uids = 2740209960;
+matrix[0][1][0].item = "Adjustable_Wrench";
+matrix[0][1][0].uids = 1667640618;
+matrix[0][1][1].item = "Adjustable_Wrench";
+matrix[0][1][1].uids = 318977578;
+matrix[0][1][2].item = "Double_Headed_Screwdriver";
+matrix[0][1][2].uids = 3550035498;
+matrix[0][1][3].item = "Double_Headed_Screwdriver";
+matrix[0][1][3].uids = 56938023;
+matrix[0][1][4].item = "Electronic_Cutters";
+matrix[0][1][4].uids = 1131940394;
+matrix[0][2][0].item = "Locking_Piler";
+matrix[0][2][0].uids = 597055529;
+matrix[0][2][1].item = "Locking_Piler";
+matrix[0][2][1].uids = 331145511;
+matrix[0][2][2].item = "Locking_Piler";
+matrix[0][2][2].uids = 1394173736;
+matrix[0][2][3].item = "Interchangeable_Screwdriver";
+matrix[0][2][3].uids = 53951273;
+matrix[0][2][4].item = "Interchangeable_Screwdriver";
+matrix[0][2][4].uids = 3271973417;
 
 
 module.exports = {

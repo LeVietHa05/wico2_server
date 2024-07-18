@@ -73,6 +73,11 @@ io.on("connection", (socket) => {
         socket.emit("/web/get-data-done", matrix);
     });
 
+    socket.on("/web/lock-door", (data) => {
+        console.log("[/web/lock-door] from [" + socket.id + "]");
+        io.emit("/web/lock-door", data);
+    });
+
 
     socket.on("message", (data) => {
         console.log(`[message] from ${data.clientID} via socket id: ${socket.id}`);

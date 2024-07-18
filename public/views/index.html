@@ -22,7 +22,7 @@
                 </svg>
                 Lock
             </div>
-            <div id="btnLogin" class="btn shadow">Log in</div>
+            <!-- <div id="btnLogin" class="btn shadow">Log in</div> -->
             <!-- show svg in html -->
             <svg class="btn" viewBox="0 0 58 59" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -203,6 +203,12 @@
         }
     });
 
+
+    const btnLock = document.querySelector('#btnLock');
+    btnLock.addEventListener('click', () => {
+        socket.emit("/web/lock-door");
+    })
+
     const socket = io();
 
     //NOTE: keep the /web/get-data 
@@ -239,7 +245,7 @@
         console.log(data)
         const curPerson = document.getElementById('userInfoName');
         curPerson.classList.remove('d-none');
-        document.getElementById('cur-person-name').innerText = data.name;
+        document.getElementById('userInfoName').innerText = data.name;
         document.getElementById('cur-person-phone').innerText = data.phone;
         document.getElementById('cur-person-uid').innerText = data.uid;
 

@@ -106,6 +106,18 @@
             </div>
         </div>
     </main>
+    <dialog id="newAcc-dialog">
+        <p>Form to create new Account!</p>
+        <form method="dialog">
+            <label for="newAccName">Name:</label>
+            <input type="text" id="newAccName" name="newAccName" required>
+            <label for="newAccPhone">Phone Number:</label>
+            <input type="number" id="newAccPhone" name="newAccPhone" required>
+            <label for="uid">UID: </label>
+            <input type="text" id="uid-input" name="uid" value="" disabled>
+            <button>OK</button>
+        </form>
+    </dialog>
 </body>
 
 <script>
@@ -170,6 +182,23 @@
     //the overall data structure is save in this matrix
     let matrix;
 
+    const newAccDialog = document.getElementById('newAcc-dialog');
+    const newAccDialog_closeBtn = document.querySelector('#newAcc-dialog button');
+
+    //handler for the new acc dialog
+    newAccDialog_closeBtn.addEventListener('click', () => {
+        newAccDialog.close();
+        let name = document.getElementById('newAccName').value;
+        let phone = document.getElementById('newAccPhone').value;
+        let uid = document.getElementById('uid-input').value;
+        if (name && phone) {
+            socket.emit("/web/new-person", {
+                name,
+                phone,
+                uid
+            })
+        }
+    });
 
     const socket = io();
 

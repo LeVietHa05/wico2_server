@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
         db.push(data);
         socket.broadcast.emit("/web/new-person-done", data);
         //send back to esp to open door after create new person
-        socket.broadcast.emit("/web/goto-person", data);
+        socket.broadcast.emit("/web/got-person", data);
     })
 
     socket.on("/web/get-data", () => {

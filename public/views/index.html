@@ -54,7 +54,8 @@
                     <img src="../image/maintain.png" class="shadow" alt="" id="userInfroAvt">
                     <div>
                         <div id="userInfoName">User name</div>
-                        <div id="userInfoRole">User role</div>
+                        <div id="cur-person-phone">User phone</div>
+                        <div id="cur-person-uid">User UID</div>
                         <div>Join: <span id="userInfoJoinDate">26/02/2024</span></div>
                     </div>
                 </div>
@@ -65,7 +66,7 @@
                 </div>
                 <div id="logInfo">
                     <div id="userDetail" class="active">
-                        kjhasfkajsdfjkasdjkhfjasf
+                        No information
                     </div>
                     <div id="userLog">
                         qwrfasfasflkjsd lksadjfklasfkljas
@@ -234,7 +235,7 @@
     //handler for the new person found (show the information of the person who just place the card to the reader)
     socket.on("/web/got-person", (data) => {
         console.log(data)
-        const curPerson = document.getElementById('cur-person');
+        const curPerson = document.getElementById('userInfoName');
         curPerson.classList.remove('d-none');
         document.getElementById('cur-person-name').innerText = data.name;
         document.getElementById('cur-person-phone').innerText = data.phone;

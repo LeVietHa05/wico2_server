@@ -69,7 +69,7 @@
                         No information
                     </div>
                     <div id="userLog">
-                        qwrfasfasflkjsd lksadjfklasfkljas
+
                     </div>
                 </div>
             </div>
@@ -218,8 +218,8 @@
     //handle the data from the server
     socket.on('/web/get-data-done', (data) => {
         console.log(data)
-        matrix = data[0];
-        processData(matrix);
+        matrix = data[0].flat();
+        processData(data[0]);
     })
 
     socket.on('connect', () => {
@@ -229,15 +229,15 @@
     //handler for the new card found (to render new grid)
     socket.on("/web/new-card-found", (data) => {
         console.log(data)
-        matrix = data[0];
-        processData(matrix);
+        processData(data[0]);
+        matrix = data[0].flat();
     })
 
     //hander for the current position of the thing (if item is there or not)
     socket.on("/web/pos-of-thing", (data) => {
         console.log(data)
-        matrix = data[0];
-        processData(matrix);
+        processData(data[0]);
+        matrix = data[0].flat();
     })
 
     //handler for the new person found (show the information of the person who just place the card to the reader)
@@ -275,9 +275,17 @@
             const gridItem = document.createElement('div');
             gridItem.classList.add('grid-item');
             if (data[i].isThingThere) {
-                gridItem.classList.add("thing-there");
+                if (matrix[i].isThingThere == false) {
+                    let now = (new Date()).toLocaleString('vi-VN');
+                    userLog.innerHTML = `<p>${now}: RETURN ${data[i].item} </p>` + userLog.innerHTML;
+                }
                 gridItem.classList.remove("thing-not-there");
+                gridItem.classList.add("thing-there");
             } else {
+                if (matrix[i].isThingThere == true) {
+                    let now = (new Date()).toLocaleString('vi-VN');
+                    userLog.innerHTML = `<p>${now}: TAKE ${data[i].item} </p>` + userLog.innerHTML;
+                }
                 gridItem.classList.remove("thing-there");
                 gridItem.classList.add("thing-not-there");
             }

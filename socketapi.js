@@ -15,7 +15,7 @@ let posOfThing = "";
 
 const db = require('./db.js');
 
-
+// let currentPerson;
 
 const socketapi = {
     io: io
@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
         let person = db.find((item) => item.uid == data.uid);
         if (person) {
             console.log("found");
+            // currentPerson = person;
             //send to all client (esp will handle this to open door)
             io.emit("/web/got-person", person);
         }

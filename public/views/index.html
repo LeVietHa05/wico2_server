@@ -105,6 +105,11 @@
                     </p>
                 </div>
             </div>
+            <div id="timeTakenSet" class="active " style="padding: 0 1rem;">
+                <input type="number" id="timeTakenSet" placeholder="120" style="padding: 1rem 1.5rem; font-size: 1vw;">
+                <input type="button btn shadow" id="timeTakenSetBtn" value="Submit" style="background-color: var(--orange2); color: var(--fontWhite);padding: 1rem 1.5rem;
+        border-radius: 1rem; font-size: 1vw">
+            </div>
         </div>
     </main>
     <dialog id="newAcc-dialog">
@@ -184,6 +189,34 @@
 <script>
     //the overall data structure is save in this matrix
     let matrix;
+    //timeTaken threshold
+    let timeTakenThreshold = 120;
+    //when user pick an item, timer will start for each taken item, if it longer than timeTakenThresold
+    //then the alarm will go off by sending a message to the server using socket
+    let timeTaken = []
+
+    setInterval(() => {
+        // console.log(timeTaken)
+        for ({item, time } of timeTaken) {
+            let timeDiff = Date.now() - time;
+            if (timeDiff > timeTakenThreshold * 1000) {
+                //send alarm to server
+                alert(`${item} taken for too long. Waiting for return`)
+                socket.emit("alarm", "alarm");
+                //remove the item from the taken list
+                timeTaken = timeTaken.filter(item => item.time != time);
+            }
+        }
+    }, 1000)
+
+    let timeTakenSetBtn = document.querySelector("#timeTakenSetBtn")
+    timeTakenSetBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        //get the time taken from the input field
+        let timeTakenInput = document.querySelector("#timeTakenSet").value
+        //set the time taken threshold
+        timeTakenThreshold = parseInt(timeTakenInput)
+    })
 
     const newAccDialog = document.getElementById('newAcc-dialog');
     const newAccDialog_closeBtn = document.querySelector('#newAcc-dialog button');
@@ -278,6 +311,10 @@
                 if (matrix[i].isThingThere == false) {
                     let now = (new Date()).toLocaleString('vi-VN');
                     userLog.innerHTML = `<p>${now}: RETURN ${data[i].item} </p>` + userLog.innerHTML;
+                    timeTaken = timeTaken.filter(({ item, time }) => {
+                        if (item != data[i].item) return false
+                        else return true
+                    })
                 }
                 gridItem.classList.remove("thing-not-there");
                 gridItem.classList.add("thing-there");
@@ -285,6 +322,7 @@
                 if (matrix[i].isThingThere == true) {
                     let now = (new Date()).toLocaleString('vi-VN');
                     userLog.innerHTML = `<p>${now}: TAKE ${data[i].item} </p>` + userLog.innerHTML;
+                    timeTaken.push({ item: `${data[i].item}`, time: Date.now() })
                 }
                 gridItem.classList.remove("thing-there");
                 gridItem.classList.add("thing-not-there");

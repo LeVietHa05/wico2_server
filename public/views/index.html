@@ -154,7 +154,26 @@
                 type: 'line',
                 data: {
                     labels: labely,
-                    datasets: newdata[i]
+                    datasets: newdata[i].map((temporay, y) => {
+                        if (typeof temporay == 'object') {
+                            return {
+                                label: labels[i][y],
+                                data: temporay,
+                                backgroundColor: 'rgb(75, 192, 192)',
+                                borderColor: 'rgb(75, 192, 192)',
+                                borderWidth: 2
+                            }
+                        }
+                        else {
+                            return {
+                                label: labels[i],
+                                data: newdata[i],
+                                backgroundColor: 'rgb(75, 192, 192)',
+                                borderColor: 'rgb(75, 192, 192)',
+                                borderWidth: 2
+                            }
+                        }
+                    })
                 },
                 options: {
                     scales: {

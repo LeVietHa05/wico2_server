@@ -37,6 +37,7 @@
             <div id="cabinetTitle">
                 <div class="btn active" id="cabinetTitleBtn1">Stage 1</div>
                 <div class="btn" id="cabinetTitleBtn2">Stage 2</div>
+                <div class="btn" id="cabinetTitleBtn3">Chart</div>
             </div>
 
             <div id="cabinet">
@@ -44,6 +45,18 @@
                 </div>
                 <div id="stage2" class="inactive">
 
+                </div>
+                <div id="stage3" style="height: 100%; width: 100%; gap: 10px; padding: 48px; grid-gap: 2rem;"
+                    class="inactive">
+                    <div style=" position: relative; background-color: #Fff;">
+                        <canvas id="myChart1"></canvas>
+                    </div>
+                    <div style=" position: relative; background-color: #Fff;">
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                    <div style=" position: relative; background-color: #Fff;">
+                        <canvas id="myChart3"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,6 +141,56 @@
     </dialog>
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let chartIDs = ['myChart1', 'myChart2', 'myChart3'];
+    let labels = [['Temperature', 'Humidity'], 'AQI', 'Dust'];
+    let charts = [];
+    function genChart(labely, newdata) {
+
+        for (let i = 0; i < chartIDs.length; i++) {
+            const ctx = document.getElementById(chartIDs[i]);
+            let chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labely,
+                    datasets: newdata[i]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            charts.push(chart)
+        }
+    }
+
+    function getLabelAndData(datas) {
+        let labels = [], temps = [], humis = [], aqis = [], dusts = [];
+        datas.forEach(data => {
+            labels.push(data.time);
+            temps.push(data.data.temp);
+            humis.push(data.data.humi)
+            dusts.push(data.data.dust)
+            aqis.push(data.data.aqi)
+        })
+        return [labels, [temps, humis], aqis, dusts];
+    }
+    fetch('/getchartdata')
+        .then(res => res.json())
+        .then(data => {
+            let [labelsy, ...newdata] = getLabelAndData(data);
+            // console.log(newdata)
+            genChart(labelsy, newdata);
+        })
+</script>
+
+
 <script>
     let imgList = {
         Wire_Stripper: '../image/Wire_Stripper.png',
@@ -142,6 +205,7 @@
 
     let stage1 = document.getElementById('stage1');
     let stage2 = document.getElementById('stage2');
+    let stage3 = document.getElementById('stage3');
 
     // info: User - Log btn switch
     let logInfoTitleUser = document.getElementById('logInfoTitleUser');
@@ -169,18 +233,32 @@
     let cabinet = document.getElementById('cabinet');
     let btnStage1 = document.getElementById('cabinetTitleBtn1');
     let btnStage2 = document.getElementById('cabinetTitleBtn2');
+    let btnStage3 = document.getElementById('cabinetTitleBtn3');
 
     btnStage1.addEventListener('click', () => {
         stage1.classList.remove('inactive');
         stage2.classList.add('inactive');
+        stage3.classList.add('inactive');
         btnStage1.classList.add('active');
         btnStage2.classList.remove('active');
+        btnStage3.classList.remove('active');
     });
     btnStage2.addEventListener('click', () => {
         stage1.classList.add('inactive');
         stage2.classList.remove('inactive');
+        stage3.classList.add('inactive');
         btnStage1.classList.remove('active');
         btnStage2.classList.add('active');
+        btnStage3.classList.remove('active');
+    });
+
+    btnStage3.addEventListener('click', () => {
+        stage1.classList.add('inactive');
+        stage2.classList.add('inactive');
+        stage3.classList.remove('inactive');
+        btnStage1.classList.remove('active');
+        btnStage2.classList.remove('active');
+        btnStage3.classList.add('active');
     });
 </script>
 
@@ -197,7 +275,7 @@
 
     setInterval(() => {
         // console.log(timeTaken)
-        for ({item, time } of timeTaken) {
+        for ({ item, time } of timeTaken) {
             let timeDiff = Date.now() - time;
             if (timeDiff > timeTakenThreshold * 1000) {
                 //send alarm to server

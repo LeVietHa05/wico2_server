@@ -18,7 +18,7 @@ router.post("/updatechartdata", (req, res) => {
     if (temp && humi && aqi) {
       data.push({
         "id": data.length + 1,
-        "time": new Date.toLocaleString('vi-VN'),
+        "time": new Date().toLocaleString('vi-VN'),
         "data": {
           "temp": Number(temp).toFixed(2),
           "humi": Number(humi).toFixed(2),
@@ -26,8 +26,10 @@ router.post("/updatechartdata", (req, res) => {
           "aqi": Number(aqi).toFixed(2)
         }
       })
+      res.json({ "message": "update data successfully" }).status(200);
+    } else {
+      throw new Error("/updatechartdata::  check data")
     }
-    res.json({ "message": "update data successfully" }).status(200);
   }
   catch (err) {
     console.log(err);

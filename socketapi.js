@@ -79,6 +79,11 @@ io.on("connection", (socket) => {
         io.emit("/web/lock-door", data);
     });
 
+    socket.on("/esp/chart-data", (data) => {
+        console.log("[/esp/chart-data] from [" + socket.id + "]");
+        socket.broadcast.emit('/web/get-chart-data', data);
+    })
+
 
     socket.on("message", (data) => {
         console.log(`[message] from ${data.clientID} via socket id: ${socket.id}`);

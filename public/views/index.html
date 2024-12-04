@@ -201,6 +201,22 @@
         })
         return [labels, [temps, humis], aqis, dusts];
     }
+
+    function addData(chart, newData) {
+
+        chart.data.datasets.forEach((dataset, i) => {
+            dataset.data.push(newData[i]);
+        });
+        chart.update();
+    }
+
+    function removeData(chart) {
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.shift();
+        });
+        chart.update();
+    }
+
     fetch('/getchartdata')
         .then(res => res.json())
         .then(data => {
@@ -390,6 +406,27 @@
     })
     socket.on("/web/new-person-done", (data) => {
         alert('New person created!');
+    })
+    socket.on('/web/get-chart-data', (data) => {
+        let { temp, humi, aqi, dust } = data;
+        charts[0].data.labels.push(new Date().toLocaleString('vi-VN'));
+        addData(charts[0], [temp, humi])
+        addData(charts[1], [aqi])
+        addData(charts[2], [dust])
+        if (charts[1].data.datasets[0].data.length > 10) {
+            charts[0].data.labels.shift();
+            removeData(charts[0])
+            removeData(charts[1])
+            removeData(charts[2])
+        }
+
+        fetch('/updatechartdata', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
     })
 
     //the core function to render the grid

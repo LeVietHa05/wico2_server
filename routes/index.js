@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
 
 router.get("/getchartdata", (req, res) => {
-  res.json(data).status(200);
+  res.json(data.slice(-10)).status(200);
 })
 
 router.post("/updatechartdata", (req, res) => {

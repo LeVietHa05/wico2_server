@@ -442,26 +442,50 @@
             }
             const gridItem = document.createElement('div');
             gridItem.classList.add('grid-item');
-            if (data[i].isThingThere) {
-                if (matrix[i].isThingThere == false) {
-                    let now = (new Date()).toLocaleString('vi-VN');
-                    userLog.innerHTML = `<p>${now}: RETURN ${data[i].item} </p>` + userLog.innerHTML;
-                    timeTaken = timeTaken.filter(({ item, time }) => {
-                        if (item != data[i].item) return false
-                        else return true
-                    })
+            if (data[i].item == 'Adjustable_Wrench') {
+                if (data[i + 1].isThingThere) {
+                    if (matrix[i + 1].isThingThere == false) {
+                        let now = (new Date()).toLocaleString('vi-VN');
+                        userLog.innerHTML = `<p>${now}: RETURN ${data[i + 1].item} </p>` + userLog.innerHTML;
+                        timeTaken = timeTaken.filter(({ item, time }) => {
+                            if (item != data[i + 1].item) return false
+                            else return true
+                        })
+                    }
+                    gridItem.classList.remove("thing-not-there");
+                    gridItem.classList.add("thing-there");
+                } else {
+                    if (matrix[i].isThingThere == true) {
+                        let now = (new Date()).toLocaleString('vi-VN');
+                        userLog.innerHTML = `<p>${now}: TAKE ${data[i].item} </p>` + userLog.innerHTML;
+                        timeTaken.push({ item: `${data[i].item}`, time: Date.now() })
+                    }
+                    gridItem.classList.remove("thing-there");
+                    gridItem.classList.add("thing-not-there");
                 }
-                gridItem.classList.remove("thing-not-there");
-                gridItem.classList.add("thing-there");
             } else {
-                if (matrix[i].isThingThere == true) {
-                    let now = (new Date()).toLocaleString('vi-VN');
-                    userLog.innerHTML = `<p>${now}: TAKE ${data[i].item} </p>` + userLog.innerHTML;
-                    timeTaken.push({ item: `${data[i].item}`, time: Date.now() })
+                if (data[i].isThingThere) {
+                    if (matrix[i].isThingThere == false) {
+                        let now = (new Date()).toLocaleString('vi-VN');
+                        userLog.innerHTML = `<p>${now}: RETURN ${data[i].item} </p>` + userLog.innerHTML;
+                        timeTaken = timeTaken.filter(({ item, time }) => {
+                            if (item != data[i].item) return false
+                            else return true
+                        })
+                    }
+                    gridItem.classList.remove("thing-not-there");
+                    gridItem.classList.add("thing-there");
+                } else {
+                    if (matrix[i].isThingThere == true) {
+                        let now = (new Date()).toLocaleString('vi-VN');
+                        userLog.innerHTML = `<p>${now}: TAKE ${data[i].item} </p>` + userLog.innerHTML;
+                        timeTaken.push({ item: `${data[i].item}`, time: Date.now() })
+                    }
+                    gridItem.classList.remove("thing-there");
+                    gridItem.classList.add("thing-not-there");
                 }
-                gridItem.classList.remove("thing-there");
-                gridItem.classList.add("thing-not-there");
             }
+
             gridItem.style.gridArea = `${data[i].item}`;
             gridItem.setAttribute('data-item', data[i].item);
             gridContainer.appendChild(gridItem);
